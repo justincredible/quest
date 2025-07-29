@@ -5,8 +5,6 @@ use gui::Gui;
 pub mod menu;
 use menu::Menu;
 
-const TITLE_SIZE: f32 = 100.;
-
 fn main() -> eframe::Result {
     let options = eframe::NativeOptions {
 	centered: true,
