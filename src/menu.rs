@@ -17,7 +17,6 @@ impl crate::Gui for Menu {
 	    Menu::Main => {
 		title_screen(ui);
 		ui.vertical_centered(|ui| {
-		    ui.add_space(MENU_SPACE);
 		    if ui.button("Start").clicked() {
 			*self = Menu::Start;
 		    }
@@ -29,18 +28,39 @@ impl crate::Gui for Menu {
 	    Menu::Start => {
 		title_screen(ui);
 		ui.vertical_centered(|ui| {
-		    ui.add_space(MENU_SPACE);
 		    if ui.button("New").clicked() {
 		    }
 		    if ui.button("Load").clicked() {
 		    }
 		    if ui.button("Options").clicked() {
+			*self = Menu::Options;
 		    }
 		    if ui.button("Help").clicked() {
 			*self = Menu::Help;
 		    }
 		    if ui.button("Back").clicked() {
 			*self = Menu::Main;
+		    }
+		});
+	    },
+	    Menu::Options => {
+		title_screen(ui);
+		ui.vertical_centered(|ui| {
+		    if ui.button("Quit").clicked() {
+			ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
+		    }
+		    if ui.button("Back").clicked() {
+			*self = Menu::Start;
+		    }
+		});
+	    },
+	    Menu::Help => {
+		title_screen(ui);
+		ui.vertical_centered(|ui| {
+		    ui.label("God helps those who help themselves.");
+		    ui.add_space(MENU_SPACE);
+		    if ui.button("Back").clicked() {
+			*self = Menu::Start;
 		    }
 		});
 	    },
@@ -67,6 +87,6 @@ fn title_screen(ui: &mut egui::Ui) {
 		.strong()
 		.underline()
 		.size(TITLE_SIZE));
-	ui.add_space(MENU_SPACE);
+	ui.add_space(2. * MENU_SPACE);
     });
 }
