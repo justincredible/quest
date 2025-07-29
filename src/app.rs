@@ -1,5 +1,4 @@
 use eframe::egui;
-use crate::Gui;
 
 pub enum App {
     Menu(crate::Menu),
@@ -11,4 +10,8 @@ impl eframe::App for App {
 	    App::Menu(menu_type) => egui::CentralPanel::default().show(context, |ui| menu_type.gui(ui)),
 	};
     }
+}
+
+pub trait Gui {
+    fn gui(&mut self, _ui: &mut egui::Ui);
 }

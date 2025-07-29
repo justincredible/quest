@@ -1,7 +1,5 @@
 pub mod app;
 use app::App;
-pub mod gui;
-use gui::Gui;
 pub mod menu;
 use menu::Menu;
 

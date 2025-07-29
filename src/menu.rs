@@ -11,7 +11,7 @@ pub enum Menu {
     Help,
 }
 
-impl crate::Gui for Menu {
+impl crate::app::Gui for Menu {
     fn gui(&mut self, ui: &mut egui::Ui) {
 	match self {
 	    Menu::Main => {
