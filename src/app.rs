@@ -7,7 +7,7 @@ pub enum App {
 }
 
 trait Gui {
-    fn gui(&self, _ui: &mut egui::Ui);
+    fn gui(&mut self, _ui: &mut egui::Ui);
 }
 
 pub enum MenuType {
@@ -16,15 +16,33 @@ pub enum MenuType {
 }
 
 impl Gui for MenuType {
-    fn gui(&self, ui: &mut egui::Ui) {
+    fn gui(&mut self, ui: &mut egui::Ui) {
 	match self {
 	    MenuType::Main => {
 		ui.vertical_centered(|ui| {
 		    ui.add_space(TITLE_SPACING);
 		    if ui.button("Start").clicked() {
+			*self = MenuType::Start;
 		    }
 		});
 	    },
+	    MenuType::Start => {
+		ui.vertical_centered(|ui| {
+		    ui.add_space(TITLE_SPACING);
+		    if ui.button("New").clicked() {
+		    }
+		    if ui.button("Load").clicked() {
+		    }
+		    if ui.button("Options").clicked() {
+		    }
+		    if ui.button("Help").clicked() {
+		    }
+		    if ui.button("Back").clicked() {
+			*self = MenuType::Main;
+		    }
+		});
+	    },
+	    #[allow(unreachable_patterns)]
 	    _ => ()
 	}
     }
