@@ -1,5 +1,5 @@
 pub mod app;
-use app::App;
+use app::{App, MenuType};
 
 const TITLE_SIZE: f32 = 100.;
 
@@ -9,5 +9,5 @@ fn main() -> eframe::Result {
 	..Default::default()
     };
 
-    eframe::run_native("quest", options, Box::new(|_cc| Ok(Box::new(App::MainMenu))))
+    eframe::run_native("quest", options, Box::new(|_cc| Ok(Box::new(App::Menu(MenuType::Main)))))
 }

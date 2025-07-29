@@ -1,22 +1,42 @@
 use eframe::egui;
 
+const TITLE_SPACING: f32 = 25.;
+
 pub enum App {
-    MainMenu,
+    Menu(MenuType),
 }
 
-const TITLE_SPACING: f32 = 25.;
+trait Gui {
+    fn gui(&self, _ui: &mut egui::Ui);
+}
+
+pub enum MenuType {
+    Main,
+    Start,
+}
+
+impl Gui for MenuType {
+    fn gui(&self, ui: &mut egui::Ui) {
+	match self {
+	    MenuType::Main => {
+		ui.vertical_centered(|ui| {
+		    ui.add_space(TITLE_SPACING);
+		    if ui.button("Start").clicked() {
+		    }
+		});
+	    },
+	    _ => ()
+	}
+    }
+}
 
 impl eframe::App for App {
     fn update(&mut self, context: &eframe::egui::Context, _frame: &mut eframe::Frame) {
-	match *self {
-	    App::MainMenu => {
+	match self {
+	    App::Menu(menu_type) => {
 		egui::CentralPanel::default().show(context, |ui| {
 		    title_screen(ui);
-		    ui.vertical_centered(|ui| {
-			ui.add_space(TITLE_SPACING);
-			if ui.button("Start").clicked() {
-			}
-		    });
+		    menu_type.gui(ui);
 		});
 	    },
 	}
