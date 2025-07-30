@@ -6,7 +6,7 @@ pub enum Game {
 }
 
 impl Game {
-    pub fn load(index: Option<usize>) -> Game {
+    pub fn load(index: Option<usize>) -> Self {
 	if let Some(_size) = index {
 	    todo!();
 	} else {
