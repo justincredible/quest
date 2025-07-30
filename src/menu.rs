@@ -6,6 +6,7 @@ const MENU_SPACE: f32 = 25.;
 pub enum Menu {
     Main,
     Start,
+    NewGame,
     Load,
     Options,
     Help,
@@ -13,9 +14,9 @@ pub enum Menu {
 
 impl crate::app::Gui for Menu {
     fn gui(&mut self, ui: &mut egui::Ui) {
+	title_screen(ui);
 	match self {
 	    Menu::Main => {
-		title_screen(ui);
 		ui.vertical_centered(|ui| {
 		    if ui.button("Start").clicked() {
 			*self = Menu::Start;
@@ -26,11 +27,12 @@ impl crate::app::Gui for Menu {
 		});
 	    },
 	    Menu::Start => {
-		title_screen(ui);
 		ui.vertical_centered(|ui| {
 		    if ui.button("New").clicked() {
+			*self = Menu::NewGame;
 		    }
 		    if ui.button("Load").clicked() {
+			*self = Menu::Load;
 		    }
 		    if ui.button("Options").clicked() {
 			*self = Menu::Options;
@@ -43,8 +45,12 @@ impl crate::app::Gui for Menu {
 		    }
 		});
 	    },
+	    Menu::NewGame => {
+		ui.vertical_centered(|ui| {
+		    ui.label("anderegwo...")
+		});
+	    },
 	    Menu::Options => {
-		title_screen(ui);
 		ui.vertical_centered(|ui| {
 		    if ui.button("Quit").clicked() {
 			ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
@@ -55,7 +61,6 @@ impl crate::app::Gui for Menu {
 		});
 	    },
 	    Menu::Help => {
-		title_screen(ui);
 		ui.vertical_centered(|ui| {
 		    ui.label("God helps those who help themselves.");
 		    ui.add_space(MENU_SPACE);
