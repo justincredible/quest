@@ -6,7 +6,7 @@ const MENU_SPACE: f32 = 25.;
 pub enum Menu {
     Main,
     Start,
-    NewGame,
+    Play(Option<usize>),
     Load,
     Options,
     Help,
@@ -29,7 +29,7 @@ impl crate::app::Gui for Menu {
 	    Menu::Start => {
 		ui.vertical_centered(|ui| {
 		    if ui.button("New").clicked() {
-			*self = Menu::NewGame;
+			*self = Menu::Play(None);
 		    }
 		    if ui.button("Load").clicked() {
 			*self = Menu::Load;
@@ -45,7 +45,7 @@ impl crate::app::Gui for Menu {
 		    }
 		});
 	    },
-	    Menu::NewGame => {
+	    Menu::Play(_) => {
 		ui.vertical_centered(|ui| {
 		    ui.label("anderegwo...")
 		});
