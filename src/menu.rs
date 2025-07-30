@@ -59,6 +59,9 @@ impl crate::app::Gui for Menu {
 		ui.vertical_centered(|ui| {
 		    ui.label("God helps those who help themselves.");
 		    ui.add_space(MENU_SPACE);
+		    if ui.button("Help!").clicked() {
+			todo!();
+		    }
 		    if ui.button("Back").clicked() {
 			*self = Menu::Start;
 		    }
