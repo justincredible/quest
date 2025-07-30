@@ -50,6 +50,17 @@ impl crate::app::Gui for Menu {
 		    ui.label("anderegwo...")
 		});
 	    },
+	    Menu::Load => {
+		ui.vertical_centered(|ui| {
+		    egui::ScrollArea::horizontal().show(ui, |ui| {
+			ui.label("Select game");
+		    });
+		    ui.add_space(MENU_SPACE);
+		    if ui.button("Back").clicked() {
+			*self = Menu::Start;
+		    }
+		});
+	    },
 	    Menu::Options => {
 		ui.vertical_centered(|ui| {
 		    if ui.button("Quit").clicked() {
