@@ -19,8 +19,10 @@ pub struct GameData {
 }
 
 impl crate::app::Gui for Game {
-    fn gui(&mut self, ui: &mut egui::Ui) {
-	ui.label("oops...");
-	todo!();
+    fn gui(&mut self, context: &egui::Context) {
+	egui::CentralPanel::default().show(context, |ui| {
+	    ui.label("oops...");
+	    todo!();
+	});
     }
 }

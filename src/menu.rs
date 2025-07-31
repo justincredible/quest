@@ -13,79 +13,81 @@ pub enum Menu {
 }
 
 impl crate::app::Gui for Menu {
-    fn gui(&mut self, ui: &mut egui::Ui) {
-	title_screen(ui);
-	match self {
-	    Menu::Main => {
-		ui.vertical_centered(|ui| {
-		    if ui.button("Start").clicked() {
-			*self = Menu::Start;
-		    }
-		    if ui.button("Quit").clicked() {
-			ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
-		    }
-		});
-	    },
-	    Menu::Start => {
-		ui.vertical_centered(|ui| {
-		    if ui.button("New").clicked() {
-			*self = Menu::Play(None);
-		    }
-		    if ui.button("Load").clicked() {
-			*self = Menu::Load;
-		    }
-		    if ui.button("Options").clicked() {
-			*self = Menu::Options;
-		    }
-		    if ui.button("Help").clicked() {
-			*self = Menu::Help;
-		    }
-		    if ui.button("Back").clicked() {
-			*self = Menu::Main;
-		    }
-		});
-	    },
-	    Menu::Play(_) => {
-		ui.vertical_centered(|ui| {
-		    ui.label("anderegwo...")
-		});
-	    },
-	    Menu::Load => {
-		ui.vertical_centered(|ui| {
-		    egui::ScrollArea::horizontal().show(ui, |ui| {
-			ui.label("Select game");
+    fn gui(&mut self, context: &egui::Context) {
+	egui::CentralPanel::default().show(context, |ui| {
+	    title_screen(ui);
+	    match self {
+		Menu::Main => {
+		    ui.vertical_centered(|ui| {
+			if ui.button("Start").clicked() {
+			    *self = Menu::Start;
+			}
+			if ui.button("Quit").clicked() {
+			    ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
+			}
 		    });
-		    ui.add_space(MENU_SPACE);
-		    if ui.button("Back").clicked() {
-			*self = Menu::Start;
-		    }
-		});
-	    },
-	    Menu::Options => {
-		ui.vertical_centered(|ui| {
-		    if ui.button("Quit").clicked() {
-			ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
-		    }
-		    if ui.button("Back").clicked() {
-			*self = Menu::Start;
-		    }
-		});
-	    },
-	    Menu::Help => {
-		ui.vertical_centered(|ui| {
-		    ui.label("God helps those who help themselves.");
-		    ui.add_space(MENU_SPACE);
-		    if ui.button("Help!").clicked() {
-			todo!();
-		    }
-		    if ui.button("Back").clicked() {
-			*self = Menu::Start;
-		    }
-		});
-	    },
-	    #[allow(unreachable_patterns)]
-	    _ => ()
-	}
+		},
+		Menu::Start => {
+		    ui.vertical_centered(|ui| {
+			if ui.button("New").clicked() {
+			    *self = Menu::Play(None);
+			}
+			if ui.button("Load").clicked() {
+			    *self = Menu::Load;
+			}
+			if ui.button("Options").clicked() {
+			    *self = Menu::Options;
+			}
+			if ui.button("Help").clicked() {
+			    *self = Menu::Help;
+			}
+			if ui.button("Back").clicked() {
+			    *self = Menu::Main;
+			}
+		    });
+		},
+		Menu::Play(_) => {
+		    ui.vertical_centered(|ui| {
+			ui.label("anderegwo...")
+		    });
+		},
+		Menu::Load => {
+		    ui.vertical_centered(|ui| {
+			egui::ScrollArea::horizontal().show(ui, |ui| {
+			    ui.label("Select game");
+			});
+			ui.add_space(MENU_SPACE);
+			if ui.button("Back").clicked() {
+			    *self = Menu::Start;
+			}
+		    });
+		},
+		Menu::Options => {
+		    ui.vertical_centered(|ui| {
+			if ui.button("Quit").clicked() {
+			    ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
+			}
+			if ui.button("Back").clicked() {
+			    *self = Menu::Start;
+			}
+		    });
+		},
+		Menu::Help => {
+		    ui.vertical_centered(|ui| {
+			ui.label("God helps those who help themselves.");
+			ui.add_space(MENU_SPACE);
+			if ui.button("Help!").clicked() {
+			    todo!();
+			}
+			if ui.button("Back").clicked() {
+			    *self = Menu::Start;
+			}
+		    });
+		},
+		#[allow(unreachable_patterns)]
+		_ => ()
+	    }
+	});
     }
 }
 

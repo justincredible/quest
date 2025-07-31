@@ -8,18 +8,18 @@ pub enum App {
 impl eframe::App for App {
     fn update(&mut self, context: &egui::Context, _frame: &mut eframe::Frame) {
 	match self {
-	    App::Menu(menu_type) => match *menu_type {
+	    App::Menu(menu) => match *menu {
 		crate::Menu::Play(game) => *self = App::Game(crate::Game::load(game)),
-		_ => { egui::CentralPanel::default().show(context, |ui| menu_type.gui(ui)); },
+		_ => menu.gui(context),
 	    },
-	    App::Game(game_type) => match game_type {
+	    App::Game(game) => match game {
 		crate::Game::Exited => *self = App::Menu(crate::Menu::Start),
-		_ => { egui::CentralPanel::default().show(context, |ui| game_type.gui(ui)); },
+		_ => game.gui(context),
 	    },
 	};
     }
 }
 
 pub trait Gui {
-    fn gui(&mut self, _ui: &mut egui::Ui);
+    fn gui(&mut self, _ctx: &egui::Context);
 }
