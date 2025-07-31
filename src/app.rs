@@ -12,8 +12,8 @@ impl eframe::App for App {
 		crate::Menu::Play(game) => *self = App::Game(crate::Game::load(game)),
 		_ => menu.gui(context),
 	    },
-	    App::Game(game) => match game {
-		crate::Game::Exited => *self = App::Menu(crate::Menu::Start),
+	    App::Game(game) => match game.state() {
+		crate::game::State::Exited => *self = App::Menu(crate::Menu::Start),
 		_ => game.gui(context),
 	    },
 	};
