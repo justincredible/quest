@@ -7,7 +7,7 @@ pub enum State {
 
 pub struct Game {
     state: State,
-    minibuffer: String,
+    minibuffer: Minibuffer,
 }
 
 impl Game {
@@ -17,7 +17,7 @@ impl Game {
 	} else {
 	    Game {
 		state: State::Loaded(None),
-		minibuffer: "".to_string(),
+		minibuffer: Default::default(),
 	    }
 	}
     }
@@ -39,7 +39,15 @@ impl crate::app::Gui for Game {
 	egui::TopBottomPanel::bottom("Minibuffer").resizable(false).show(context, |ui| {
 	    ui.with_layout(
 		vertical_layout(egui::Align::Center, true, egui::Direction::BottomUp), |ui| {
-		    ui.text_edit_singleline(&mut self.minibuffer);
+		    let minibuffer = ui.text_edit_singleline(&mut self.minibuffer.input);
+		    if minibuffer.lost_focus() {
+			self.minibuffer.execute();
+			self.minibuffer.input.clear();
+			if self.minibuffer.closing {
+			    self.state = State::Exited;
+			}
+		    }
+		    ui.label(&self.minibuffer.output);
 		},
 	    );
 	});
@@ -52,6 +60,28 @@ impl crate::app::Gui for Game {
                 State::Exited => (),
             }
         });
+    }
+}
+
+#[derive(Default)]
+struct Minibuffer {
+    input: String,
+    output: String,
+    closing: bool,
+}
+
+impl Minibuffer {
+    pub fn execute(&mut self) {
+	let input = self.input.to_lowercase();
+
+	if input.is_empty() {
+	    self.output.clear();
+	} else if input.as_str() == "quit" {
+	    self.output = "Quitting...".to_string();
+	    self.closing = true;
+	} else {
+	    self.output = format!("I don't understand \"{}\"", self.input);
+	}
     }
 }
 
