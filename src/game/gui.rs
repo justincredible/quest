@@ -36,22 +36,10 @@ impl crate::app::Gui for Game {
 		}
 	    });
 	});
-	egui::TopBottomPanel::bottom("Minibuffer").resizable(false).show(context, |ui| {
-	    ui.with_layout(
-		vertical_layout(egui::Align::Min, true, egui::Direction::BottomUp), |ui| {
-		    let minibuffer = ui.text_edit_singleline(&mut self.minibuffer.input);
-		    if minibuffer.lost_focus() { //TODO: check for enter press instead of tab or outside click
-			self.minibuffer.execute();
-			self.minibuffer.input.clear();
-		    }
-		    minibuffer.request_focus();
-		    ui.add_enabled(false, egui::Label::new(&self.minibuffer.output));
-		    if self.minibuffer.output.starts_with("Quitting") {
-			self.state = State::Exited;
-		    }
-		},
-	    );
-	});
+	self.minibuffer.gui(context);
+	if self.minibuffer.closing {
+	    self.state = State::Exited;
+	}
         egui::CentralPanel::default().show(context, |ui| {
             match &self.state {
                 State::Loaded(None) => {
@@ -88,11 +76,11 @@ impl Minibuffer {
 
 	if input.is_empty() {
 	    self.output.clear();
-	} else if matches!(inputs[0], "hello" | "hey" | "hi") {
-	    self.output = "hi.".to_string();
 	} else if inputs[0] == "quit" {
 	    self.output = "Quitting...".to_string();
 	    self.closing = true;
+	} else if matches!(inputs[0], "hello" | "hey" | "hi") {
+	    self.output = "hi.".to_string();
 	} else {
 	    self.output = format!("I don't understand \"{}\"", self.input);
 	}
@@ -101,5 +89,18 @@ impl Minibuffer {
 
 impl crate::app::Gui for Minibuffer {
     fn gui(&mut self, context: &egui::Context) {
+	egui::TopBottomPanel::bottom("Minibuffer").resizable(false).show(context, |ui| {
+	    ui.with_layout(
+		vertical_layout(egui::Align::Min, true, egui::Direction::BottomUp), |ui| {
+		    let minibuffer = ui.text_edit_singleline(&mut self.input);
+		    if minibuffer.lost_focus() { //TODO: check for enter press instead of tab or outside click
+			self.execute();
+			self.input.clear();
+		    }
+		    minibuffer.request_focus();
+		    ui.add_enabled(false, egui::Label::new(&self.output));
+		},
+	    );
+	});
     }
 }
