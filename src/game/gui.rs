@@ -52,12 +52,11 @@ impl crate::app::Gui for Game {
     }
 }
 
-fn vertical_layout(alignment: egui::Align, justified: bool, direction: egui::Direction) -> egui::Layout {
+fn vertical_layout(cross_align: egui::Align, cross_justify: bool, direction: egui::Direction) -> egui::Layout {
     egui::Layout {
 	main_dir: direction,
-	main_align: egui::Align::Min,
-	cross_align: alignment,
-	cross_justify: justified,
+	cross_align,
+	cross_justify,
 	..Default::default()
     }
 }
