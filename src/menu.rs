@@ -22,7 +22,7 @@ impl crate::app::Gui for Menu {
 			if ui.button("Start").clicked() {
 			    *self = Menu::Start;
 			}
-			if ui.button("Quit").clicked() {
+			if ui.button("Exit").clicked() {
 			    ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
 			}
 		    });
