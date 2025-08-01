@@ -2,14 +2,14 @@ use eframe::egui;
 
 pub enum App {
     Menu(crate::Menu),
-    Game(crate::Game),
+    Game(crate::game::Menu),
 }
 
 impl eframe::App for App {
     fn update(&mut self, context: &egui::Context, _frame: &mut eframe::Frame) {
 	match self {
 	    App::Menu(menu) => match *menu {
-		crate::Menu::Play(game) => *self = App::Game(crate::Game::load(game)),
+		crate::Menu::Play(game) => *self = App::Game(crate::game::Menu::start(game)),
 		_ => menu.gui(context),
 	    },
 	    App::Game(game) => match game.state() {

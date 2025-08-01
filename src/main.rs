@@ -1,7 +1,6 @@
 pub mod app;
 use app::App;
 pub mod game;
-use game::Game;
 pub mod menu;
 use menu::Menu;
 

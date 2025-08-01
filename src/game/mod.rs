@@ -1,5 +1,5 @@
-pub mod gui;
-pub use gui::{Game, State};
+pub mod menu;
+pub use menu::{Menu, State};
 pub mod minibuffer;
 pub use minibuffer::Minibuffer;
 pub mod quest;

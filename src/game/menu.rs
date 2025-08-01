@@ -5,17 +5,17 @@ pub enum State {
     Exited,
 }
 
-pub struct Game {
+pub struct Menu {
     state: State,
     minibuffer: crate::game::Minibuffer,
 }
 
-impl Game {
-    pub fn load(index: Option<usize>) -> Self {
+impl Menu {
+    pub fn start(index: Option<usize>) -> Self {
 	if let Some(_size) = index {
 	    todo!();
 	} else {
-	    Game {
+	    Menu {
 		state: State::Loaded(None),
 		minibuffer: Default::default(),
 	    }
@@ -27,7 +27,7 @@ impl Game {
     }
 }
 
-impl crate::app::Gui for Game {
+impl crate::app::Gui for Menu {
     fn gui(&mut self, context: &egui::Context) {
 	egui::SidePanel::left("Menu").resizable(false).show(context, |ui| {
 	    ui.with_layout(
