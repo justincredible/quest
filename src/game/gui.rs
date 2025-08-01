@@ -38,16 +38,17 @@ impl crate::app::Gui for Game {
 	});
 	egui::TopBottomPanel::bottom("Minibuffer").resizable(false).show(context, |ui| {
 	    ui.with_layout(
-		vertical_layout(egui::Align::Center, true, egui::Direction::BottomUp), |ui| {
+		vertical_layout(egui::Align::Min, true, egui::Direction::BottomUp), |ui| {
 		    let minibuffer = ui.text_edit_singleline(&mut self.minibuffer.input);
-		    if minibuffer.lost_focus() {
+		    if minibuffer.lost_focus() { //TODO: check for enter press instead of tab or outside click
 			self.minibuffer.execute();
 			self.minibuffer.input.clear();
-			if self.minibuffer.closing {
-			    self.state = State::Exited;
-			}
 		    }
-		    ui.label(&self.minibuffer.output);
+		    minibuffer.request_focus();
+		    ui.add_enabled(false, egui::Label::new(&self.minibuffer.output));
+		    if self.minibuffer.output.starts_with("Quitting") {
+			self.state = State::Exited;
+		    }
 		},
 	    );
 	});
@@ -63,6 +64,16 @@ impl crate::app::Gui for Game {
     }
 }
 
+fn vertical_layout(alignment: egui::Align, justified: bool, direction: egui::Direction) -> egui::Layout {
+    egui::Layout {
+	main_dir: direction,
+	main_align: egui::Align::Min,
+	cross_align: alignment,
+	cross_justify: justified,
+	..Default::default()
+    }
+}
+
 #[derive(Default)]
 struct Minibuffer {
     input: String,
@@ -73,10 +84,13 @@ struct Minibuffer {
 impl Minibuffer {
     pub fn execute(&mut self) {
 	let input = self.input.to_lowercase();
+	let inputs: Vec<&str> = input.split(|c: char| c.is_ascii_punctuation() || c.is_whitespace()).collect();
 
 	if input.is_empty() {
 	    self.output.clear();
-	} else if input.as_str() == "quit" {
+	} else if matches!(inputs[0], "hello" | "hey" | "hi") {
+	    self.output = "hi.".to_string();
+	} else if inputs[0] == "quit" {
 	    self.output = "Quitting...".to_string();
 	    self.closing = true;
 	} else {
@@ -85,11 +99,7 @@ impl Minibuffer {
     }
 }
 
-fn vertical_layout(alignment: egui::Align, justified: bool, direction: egui::Direction) -> egui::Layout {
-    egui::Layout {
-	main_dir: direction,
-	cross_align: alignment,
-	cross_justify: justified,
-	..Default::default()
+impl crate::app::Gui for Minibuffer {
+    fn gui(&mut self, context: &egui::Context) {
     }
 }
