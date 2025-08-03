@@ -1,7 +1,9 @@
+use std::sync::mpsc;
+
 pub struct Quest {
-    data: GameData,
+    action: mpsc::Receiver<super::Action>,
+    update: mpsc::Sender<super::Update>,
+    state: State,
 }
 
-pub struct GameData {
-}
-
+struct State;

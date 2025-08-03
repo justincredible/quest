@@ -3,7 +3,9 @@ use std::sync::mpsc;
 pub struct Game {
     action: mpsc::Sender<Action>,
     update: mpsc::Receiver<Update>,
+    data: Data,
 }
 
-struct Action;
-struct Update;
+pub struct Action;
+pub struct Update;
+struct Data;

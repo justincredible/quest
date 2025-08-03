@@ -1,5 +1,5 @@
 mod game;
-use game::Game;
+use game::{Action, Game, Update};
 mod menu;
 pub use menu::{Menu, State};
 mod minibuffer;
