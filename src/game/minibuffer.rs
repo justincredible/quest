@@ -38,7 +38,8 @@ impl crate::app::Gui for Minibuffer {
 		    .with_cross_justify(true),
 		|ui| {
 		    let minibuffer = ui.text_edit_singleline(&mut self.input);
-		    if minibuffer.lost_focus() { //TODO: check for enter press instead of tab or outside click
+		    let enter_pressed = ui.ctx().input(|i| i.key_pressed(egui::Key::Enter));
+		    if minibuffer.lost_focus() && enter_pressed {
 			self.execute();
 			self.input.clear();
 		    }
