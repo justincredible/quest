@@ -37,13 +37,21 @@ impl crate::app::Gui for Minibuffer {
 		    .with_main_align(egui::Align::Max)
 		    .with_cross_justify(true),
 		|ui| {
+		    let (enter_pressed, tab_pressed) = context.input(|i| {
+			(i.key_pressed(egui::Key::Enter),
+			 i.key_pressed(egui::Key::Tab))
+		    });
+		    let unfocused = context.memory(|m| m.focused().is_none());
 		    let minibuffer = ui.text_edit_singleline(&mut self.input);
-		    let enter_pressed = ui.ctx().input(|i| i.key_pressed(egui::Key::Enter));
 		    if minibuffer.lost_focus() && enter_pressed {
 			self.execute();
 			self.input.clear();
 		    }
-		    minibuffer.request_focus();
+		    // refocus if enter pressed or outside sense
+		    // set focus when nothing is (TODO: handle this more reliably)
+		    if minibuffer.lost_focus() && !tab_pressed || unfocused {
+			minibuffer.request_focus();
+		    }
 		    ui.add_enabled(false, egui::Label::new(&self.output));
 		},
 	    );
