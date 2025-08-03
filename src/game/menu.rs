@@ -5,6 +5,13 @@ pub enum State {
     Exited,
 }
 
+impl Default for State {
+    fn default() -> Self {
+	State::Loaded(None)
+    }
+}
+
+#[derive(Default)]
 pub struct Menu {
     state: State,
     minibuffer: crate::game::Minibuffer,
@@ -15,10 +22,7 @@ impl Menu {
 	if let Some(_size) = index {
 	    todo!();
 	} else {
-	    Menu {
-		state: State::Loaded(None),
-		minibuffer: Default::default(),
-	    }
+	    Menu::default()
 	}
     }
 
