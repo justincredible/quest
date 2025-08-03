@@ -1,7 +1,7 @@
-pub mod game;
+mod game;
 use game::Game;
-pub mod menu;
+mod menu;
 pub use menu::{Menu, State};
-pub mod minibuffer;
-pub use minibuffer::Minibuffer;
-pub mod quest;
+mod minibuffer;
+use minibuffer::Minibuffer;
+mod quest;

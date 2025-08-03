@@ -1,7 +1,7 @@
 use eframe::egui;
 
 pub enum State {
-    Loaded(Option<crate::game::Game>),
+    Loaded(Option<super::Game>),
     Exited,
 }
 
@@ -14,7 +14,7 @@ impl Default for State {
 #[derive(Default)]
 pub struct Menu {
     state: State,
-    minibuffer: crate::game::Minibuffer,
+    minibuffer: super::Minibuffer,
 }
 
 impl Menu {

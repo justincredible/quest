@@ -1,7 +1,7 @@
-pub mod app;
+mod app;
 use app::App;
-pub mod game;
-pub mod menu;
+mod game;
+mod menu;
 use menu::Menu;
 
 fn main() -> eframe::Result {
