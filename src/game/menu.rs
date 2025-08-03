@@ -1,7 +1,7 @@
 use eframe::egui;
 
 pub enum State {
-    Loaded(Option<crate::game::Quest>),
+    Loaded(Option<crate::game::Game>),
     Exited,
 }
 
