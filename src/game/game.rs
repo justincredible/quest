@@ -6,6 +6,12 @@ pub struct Game {
     data: Data,
 }
 
-pub struct Action;
-pub struct Update;
+pub enum Action {
+    Start,
+}
+
+pub enum Update {
+    New(String),
+}
+
 struct Data;
