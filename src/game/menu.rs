@@ -54,7 +54,9 @@ impl crate::app::Gui for Menu {
                 },
                 State::Loaded(Some(_game)) => {
                 },
-                State::Exited => (),
+                State::Exited => {
+		    ui.label("Fare thee well!");
+		},
             }
         });
     }
