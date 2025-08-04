@@ -19,9 +19,9 @@ impl Quest {
 
     pub fn run(&self) {
 	self.action.recv().map_or_else(
-	    |e| eprintln!("{:?}", e),
-	    |a| {
-		match a {
+	    |error| eprintln!("{:?}", error),
+	    |action| {
+		match action {
 		    Action::Start => self.update
 			.send(Update::New("Welcome to QUEST!".to_string()))
 			.expect("a new game"),
