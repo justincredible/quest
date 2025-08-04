@@ -1,9 +1,35 @@
 use std::sync::mpsc;
+use super::Action;
+use super::Update;
 
 pub struct Quest {
-    action: mpsc::Receiver<super::Action>,
-    update: mpsc::Sender<super::Update>,
+    action: mpsc::Receiver<Action>,
+    update: mpsc::Sender<Update>,
     state: State,
+}
+
+impl Quest {
+    pub fn new(action: mpsc::Receiver<Action>, update: mpsc::Sender<Update>) -> Self {
+	Self {
+	    action,
+	    update,
+	    state: State,
+	}
+    }
+
+    pub fn run(&self) {
+	self.action.recv().map_or_else(
+	    |e| eprintln!("{:?}", e),
+	    |a| {
+		match a {
+		    Action::Start => self.update
+			.send(Update::New("Welcome to QUEST!".to_string()))
+			.expect("a new game"),
+		}
+		self.run();
+	    },
+	);
+    }
 }
 
 struct State;

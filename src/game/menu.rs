@@ -1,7 +1,9 @@
 use eframe::egui;
+use super::Game;
+use super::Minibuffer;
 
 pub enum State {
-    Loaded(Option<super::Game>),
+    Loaded(Option<Game>),
     Exited,
 }
 
@@ -14,7 +16,8 @@ impl Default for State {
 #[derive(Default)]
 pub struct Menu {
     state: State,
-    minibuffer: super::Minibuffer,
+    minibuffer: Minibuffer,
+    subsequent: bool,
 }
 
 impl Menu {
@@ -48,13 +51,21 @@ impl crate::app::Gui for Menu {
 	if self.minibuffer.closing() {
 	    self.state = State::Exited;
 	}
+	if !self.subsequent {
+	    context.request_discard("graphical glitches on program initial render");
+	    self.subsequent = true;
+	}
         egui::CentralPanel::default().show(context, |ui| {
-            match &self.state {
-                State::Loaded(None) => {
+            match self {
+                Menu { state: State::Loaded(None), .. } => {
+		    let mut game = Game::new();
+		    ui.label(game.output());
+		    self.state = State::Loaded(Some(game));
                 },
-                State::Loaded(Some(_game)) => {
+                Menu { state: State::Loaded(Some(game)), .. } => {
+		    ui.label(game.output());
                 },
-                State::Exited => {
+                Menu { state: State::Exited, .. } => {
 		    ui.label("Fare thee well!");
 		},
             }

@@ -5,3 +5,4 @@ pub use menu::{Menu, State};
 mod minibuffer;
 use minibuffer::Minibuffer;
 mod quest;
+use quest::Quest;
