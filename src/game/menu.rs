@@ -17,7 +17,6 @@ impl Default for State {
 pub struct Menu {
     state: State,
     minibuffer: Minibuffer,
-    subsequent: bool,
 }
 
 impl Menu {
@@ -50,10 +49,6 @@ impl crate::app::Gui for Menu {
 	self.minibuffer.gui(context);
 	if self.minibuffer.closing() {
 	    self.state = State::Exited;
-	}
-	if !self.subsequent {
-	    context.request_discard("graphical glitches on program initial render");
-	    self.subsequent = true;
 	}
         egui::CentralPanel::default().show(context, |ui| {
             match self {
