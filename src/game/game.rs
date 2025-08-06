@@ -5,23 +5,20 @@ pub struct Game {
     action: mpsc::Sender<Action>,
     update: mpsc::Receiver<Update>,
     data: Data,
-    quest: thread::JoinHandle<()>
 }
 
 impl Game {
     pub fn new() -> Self {
 	let (action, receiver) = mpsc::channel();
 	let (sender, update) = mpsc::channel();
-	let quest = thread::Builder::new().spawn(|| {
-	    let quest = super::Quest::new(receiver, sender);
-	    quest.run();
-	}).expect("an OS thread");
+	thread::Builder::new()
+	    .spawn(|| super::Quest::new(receiver, sender).run())
+	    .expect("an OS thread");
 	action.send(Action::Start).expect("a prompt response");
 	Self {
 	    action,
 	    update,
 	    data: Default::default(),
-	    quest,
 	}
     }
 
