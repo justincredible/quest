@@ -1,5 +1,6 @@
 use std::sync::mpsc;
 
+use super::strings;
 use super::Action;
 use super::Update;
 
@@ -24,7 +25,7 @@ impl Quest {
 	    |action| {
 		match action {
 		    Action::Start => self.update
-			.send(Update::New("Welcome to QUEST!".to_string()))
+			.send(Update::New(strings::NEW))
 			.expect("a new game"),
 		    Action::ShutDown => return,
 		}

@@ -44,10 +44,10 @@ pub enum Action {
 }
 
 pub enum Update {
-    New(String),
+    New(&'static str),
 }
 
 #[derive(Default)]
 struct Data {
-    output: String,
+    output: &'static str,
 }
