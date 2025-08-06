@@ -1,4 +1,6 @@
 use eframe::egui;
+
+use crate::Gui;
 use super::Game;
 use super::Minibuffer;
 
@@ -15,7 +17,7 @@ impl Default for State {
 
 #[derive(Default)]
 pub struct Menu {
-    state: State,
+    pub state: State,
     minibuffer: Minibuffer,
 }
 
@@ -27,13 +29,9 @@ impl Menu {
 	    Menu::default()
 	}
     }
-
-    pub fn state(&self) -> &State {
-	&self.state
-    }
 }
 
-impl crate::app::Gui for Menu {
+impl Gui for Menu {
     fn gui(&mut self, context: &egui::Context) {
 	egui::SidePanel::left("Menu").resizable(false).show(context, |ui| {
 	    ui.with_layout(

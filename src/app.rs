@@ -1,33 +1,31 @@
 use eframe::egui;
 
+use crate::Gui;
+use crate::Menu;
+use crate::game::Menu as Game;
+use crate::game::State;
+
 pub enum App {
-    Menu(crate::Menu),
-    Game(crate::game::Menu),
+    Menu(Menu),
+    Game(Game),
+}
+
+impl Gui for App {
+    fn gui(&mut self, context: &egui::Context) {
+	match self {
+	    App::Menu(menu) => menu.gui(context),
+	    App::Game(game) => game.gui(context),
+	}
+    }
 }
 
 impl eframe::App for App {
     fn update(&mut self, context: &egui::Context, _frame: &mut eframe::Frame) {
+	self.gui(context);
 	match self {
-	    App::Menu(menu) => match *menu {
-		crate::Menu::Play(game) => {
-		    let mut menu = crate::game::Menu::start(game);
-		    menu.gui(context);
-		    *self = App::Game(menu);
-		},
-		_ => menu.gui(context),
-	    },
-	    App::Game(game) => match game.state() {
-		crate::game::State::Exited => {
-		    let mut menu = crate::Menu::Start;
-		    menu.gui(context);
-		    *self = App::Menu(menu);
-		},
-		_ => game.gui(context),
-	    },
+	    App::Menu(Menu::Play(game)) => *self = App::Game(Game::start(*game)),
+	    App::Game(Game { state: State::Exited, .. }) => *self = App::Menu(Menu::Start),
+	    _ => (),
 	};
     }
-}
-
-pub trait Gui {
-    fn gui(&mut self, _ctx: &egui::Context);
 }

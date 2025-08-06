@@ -1,5 +1,7 @@
 use eframe::egui;
 
+use crate::Gui;
+
 const TITLE_SIZE: f32 = 100.;
 const MENU_SPACE: f32 = 25.;
 
@@ -12,7 +14,7 @@ pub enum Menu {
     Help,
 }
 
-impl crate::app::Gui for Menu {
+impl Gui for Menu {
     fn gui(&mut self, context: &egui::Context) {
 	egui::CentralPanel::default().show(context, |ui| {
 	    title_screen(ui);

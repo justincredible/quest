@@ -1,6 +1,8 @@
 mod app;
 use app::App;
 mod game;
+mod gui;
+use gui::Gui;
 mod menu;
 use menu::Menu;
 

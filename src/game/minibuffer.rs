@@ -1,5 +1,7 @@
 use eframe::egui;
 
+use crate::Gui;
+
 #[derive(Default)]
 pub struct Minibuffer {
     input: String,
@@ -29,7 +31,7 @@ impl Minibuffer {
     }
 }
 
-impl crate::app::Gui for Minibuffer {
+impl Gui for Minibuffer {
     fn gui(&mut self, context: &egui::Context) {
 	egui::TopBottomPanel::bottom("Minibuffer").resizable(false).show(context, |ui| {
 	    ui.with_layout(
