@@ -35,8 +35,15 @@ impl Game {
     }
 }
 
+impl Drop for Game {
+    fn drop(&mut self) {
+	self.action.send(Action::ShutDown).expect("a clean shutdown");
+    }
+}
+
 pub enum Action {
     Start,
+    ShutDown,
 }
 
 pub enum Update {

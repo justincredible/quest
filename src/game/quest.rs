@@ -26,6 +26,7 @@ impl Quest {
 		    Action::Start => self.update
 			.send(Update::New("Welcome to QUEST!".to_string()))
 			.expect("a new game"),
+		    Action::ShutDown => return,
 		}
 		self.run();
 	    },
