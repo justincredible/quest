@@ -28,7 +28,7 @@ impl Game {
 		Update::New(string) => self.data.output = string,
 	    }
 	}
-	&self.data.output
+	self.data.output
     }
 }
 

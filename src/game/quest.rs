@@ -21,7 +21,7 @@ impl Quest {
 
     pub fn run(&self) {
 	self.action.recv().map_or_else(
-	    |error| eprintln!("{:?}", error),
+	    |error| eprintln!("{error:?}"),
 	    |action| {
 		match action {
 		    Action::Start => self.update
